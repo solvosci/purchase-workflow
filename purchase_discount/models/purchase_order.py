@@ -85,9 +85,16 @@ class PurchaseOrderLine(models.Model):
             if self.order_id.date_order:
                 date = fields.Date.to_string(
                     fields.Date.from_string(self.order_id.date_order))
-            product_supplierinfo = self.product_id._select_seller(
+            seller = self.product_id._select_seller(
                 partner_id=self.partner_id, quantity=self.product_qty,
                 date=date, uom_id=self.product_uom)
-            if product_supplierinfo:
-                self.discount = product_supplierinfo.discount
+            self._apply_value_from_seller(seller)
         return res
+
+    @api.model
+    def _apply_value_from_seller(self, seller):
+        """Overload this function to prepare other data from seller,
+        like in purchase_triple_discount module"""
+        if not seller:
+            return
+        self.discount = seller.discount
