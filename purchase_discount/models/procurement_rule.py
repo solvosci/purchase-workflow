@@ -10,7 +10,7 @@ class ProcurementRule(models.Model):
     def _prepare_purchase_order_line(self, product_id, product_qty,
                                      product_uom, values, po, partner):
         """Apply the discount to the created purchase order"""
-        res = super(ProcurementRule, self)._prepare_purchase_order_line(
+        res = super()._prepare_purchase_order_line(
             product_id, product_qty, product_uom, values, po, partner)
         date = None
         if po.date_order:

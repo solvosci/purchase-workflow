@@ -28,10 +28,10 @@ class PurchaseOrderLine(models.Model):
     # adding discount to depends
     @api.depends('discount')
     def _compute_amount(self):
-        return super(PurchaseOrderLine, self)._compute_amount()
+        return super()._compute_amount()
 
     def _prepare_compute_all_values(self):
-        vals = super(PurchaseOrderLine, self)._prepare_compute_all_values()
+        vals = super()._prepare_compute_all_values()
         vals.update({'price_unit': self._get_discounted_price_unit()})
         return vals
 
@@ -68,7 +68,7 @@ class PurchaseOrderLine(models.Model):
             # Only change value if it's different
             price_unit = self.price_unit
             self.price_unit = price
-        price = super(PurchaseOrderLine, self)._get_stock_move_price_unit()
+        price = super()._get_stock_move_price_unit()
         if price_unit:
             self.price_unit = price_unit
         return price
@@ -79,7 +79,7 @@ class PurchaseOrderLine(models.Model):
         Check if a discount is defined into the supplier info and if so then
         apply it to the current purchase order line
         """
-        res = super(PurchaseOrderLine, self)._onchange_quantity()
+        res = super()._onchange_quantity()
         if self.product_id:
             date = None
             if self.order_id.date_order:
