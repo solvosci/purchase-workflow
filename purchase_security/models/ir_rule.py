@@ -28,7 +28,11 @@ class IrRule(models.Model):
         group1 = "purchase_security.group_purchase_own_orders"
         group2 = "purchase_security.group_purchase_group_orders"
         group3 = "purchase.group_purchase_manager"
-        if model_name == "res.partner" and not self.env.su:
+        if (
+            model_name == "res.partner"
+            and not self.env.su
+            and not self.env.context.get("skip_extra_contacts_rules", False)
+        ):
             if user.has_group(group1) and not user.has_group(group3):
                 extra_domain = [
                     "|",
